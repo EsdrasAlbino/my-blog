@@ -1,5 +1,6 @@
 "use client";
 
+import { wordsTranslate } from "@/lib/translate";
 import { Box, Button, Stack, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 
@@ -7,13 +8,19 @@ type FormValuesType = {
   [key: string]: string;
 };
 
-interface IFormsProps {
-  FormValues: FormValuesType;
-    buttonText: string;
-    onSubmit: (data: FormValuesType) => void;
+interface IFormsProps<T> {
+  FormValues: T;
+  buttonText: string;
+  onSubmit: (data: T) => Promise<void>;
+  title: string;
 }
 
-export const FormsComponent = ({ FormValues, buttonText, onSubmit }: IFormsProps) => {
+export const FormsComponent = <T extends Record<string, string>>({
+  FormValues,
+  buttonText,
+  onSubmit,
+  title,
+}: IFormsProps<T>) => {
   const form = useForm<typeof FormValues>({
     defaultValues: FormValues,
   });
@@ -21,16 +28,16 @@ export const FormsComponent = ({ FormValues, buttonText, onSubmit }: IFormsProps
   const { register, handleSubmit, formState } = form;
   const { errors } = formState;
 
-
   const inputs = Object.keys(FormValues).map((key) => {
     return (
       <TextField
         key={key}
-        label={key}
+        label={wordsTranslate[key] || key}
         type={key}
         {...register(key, {
           required: `${key} is required`,
         })}
+        variant="filled"
         error={!!errors[key]}
         helperText={errors[key]?.message}
       />
@@ -46,10 +53,9 @@ export const FormsComponent = ({ FormValues, buttonText, onSubmit }: IFormsProps
         maxWidth: 400,
         margin: "auto",
         padding: 2,
-        border: "1px solid #ccc",
       }}
     >
-      <h1 style={{ color: "#000" }}>Login</h1>
+      <h1 style={{}}>{title}</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {inputs}
