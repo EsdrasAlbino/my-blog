@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 type FormValuesType = {
   [key: string]: string;
 };
-
 interface IFormsProps<T> {
   FormValues: T;
   buttonText: string;
