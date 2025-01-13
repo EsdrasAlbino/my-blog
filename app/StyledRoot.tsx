@@ -1,6 +1,6 @@
-'use client';
-import { theme } from '@/lib/designSystem';
-import { ThemeProvider } from '@mui/material/styles';
+"use client";
+import { theme } from "@/lib/designSystem";
+import { ThemeProvider } from "@mui/material/styles";
 
 export function StyledRoot({
   children,
@@ -8,8 +8,8 @@ export function StyledRoot({
   children: React.ReactNode;
 }>) {
   return (
-    <ThemeProvider theme={theme}>
-      {children}
-    </ThemeProvider>
+    <>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+    </>
   );
 }
