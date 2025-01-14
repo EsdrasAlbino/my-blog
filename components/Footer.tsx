@@ -13,7 +13,7 @@ import FacebookIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TwitterIcon from "@mui/icons-material/X";
 import { Copyright } from "./complexUI/copyright/Copyright";
-import { dataMock } from "@/lib/utils";
+import { dataMock } from "@/lib/data";
 //import SitemarkIcon from './SitemarkIcon';
 
 export default function Footer() {
