@@ -1,6 +1,3 @@
-
-
-
 export const dataMock = {
   cardData: [
     {
@@ -81,4 +78,36 @@ export const dataMock = {
       label: "Tops",
     },
   ],
+  categories: [
+    {
+      label: "Todas as categorias",
+      size: "medium",
+    },
+    {
+      label: "Categoria 2",
+      size: "medium",
+      sx: {
+        backgroundColor: "transparent",
+        border: "none",
+      },
+    },
+  ],
+  optionsNavBar:[
+    {
+      label: "funcionalidades",
+      size: "small",
+    },
+    {
+      label: "Depoimentos",
+      size: "small",
+    },
+    {
+      label: "Destaques",
+      size: "small",
+    },
+    {
+      label: "Blog",
+      size: "small",
+    }
+  ]
 };

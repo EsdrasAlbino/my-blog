@@ -1,8 +1,7 @@
 import { Metadata } from "next";
 
 import { LoginComponent } from "@/components/LoginComponent";
-/* import { Command } from "lucide-react";
- */import Link from "next/link";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Autenticação",

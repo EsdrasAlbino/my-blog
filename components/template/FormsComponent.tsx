@@ -1,12 +1,9 @@
 "use client";
 
 import { wordsTranslate } from "@/lib/translate";
-import { Box, Button, Stack, TextField } from "@mui/material";
+import { Box, Button, OutlinedInput, Stack, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 
-type FormValuesType = {
-  [key: string]: string;
-};
 interface IFormsProps<T> {
   FormValues: T;
   buttonText: string;
@@ -29,17 +26,19 @@ export const FormsComponent = <T extends Record<string, string>>({
 
   const inputs = Object.keys(FormValues).map((key) => {
     return (
-      <TextField
-        key={key}
-        label={wordsTranslate[key] || key}
-        type={key}
-        {...register(key, {
-          required: `${key} is required`,
-        })}
-        variant="filled"
-        error={!!errors[key]}
-        helperText={errors[key]?.message}
-      />
+      
+        <TextField
+          key={key}
+          label={wordsTranslate[key] || key}
+          type={key}
+          {...register(key, {
+            required: `${key} is required`,
+          })}
+          variant="filled"
+          error={!!errors[key]}
+          helperText={errors[key]?.message}
+        />
+      
     );
   });
 
