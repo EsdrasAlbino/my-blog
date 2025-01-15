@@ -23,7 +23,6 @@ export default function MainContent() {
   const getPosts = async () => {
     const response = await fetch("/api/posts");
     const posts = await response.json();
-    console.log(posts);
     setPosts(posts);
   };
 
@@ -87,7 +86,7 @@ export default function MainContent() {
         </Box>
       </Box>
       <Grid container spacing={2} columns={12}>
-        {dataMock.cardData.map((card, index) => (
+        {posts.map((card, index) => (
           <PostCard card={card} index={index} key={card.title} />
         ))}
       </Grid>

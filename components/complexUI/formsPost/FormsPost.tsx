@@ -8,7 +8,7 @@ export const FormsPost = ({
   titlePage,
   buttonText,
   formsValues,
-  postId
+  postId,
 }: {
   titlePage: string;
   buttonText: string;
@@ -22,7 +22,7 @@ export const FormsPost = ({
   useEffect(() => {
     getUserLocal();
   }, [data?.user?.email]);
-  
+
   const formsValuesLocal = formsValues || {
     title: "",
     content: "",
@@ -31,17 +31,22 @@ export const FormsPost = ({
   };
 
   const getUserLocal = async () => {
-    const email = data?.user?.email;
-    const response = await fetch("/api/users?email=" + email);
-    const user = await response.json();
-    setUser(user);
+    try {
+      const email = data?.user?.email;
+
+      const response = await fetch("/api/users?email=" + email);
+      const user = await response.json();
+      setUser(user);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   async function onSubmitPatch(data: typeof formsValues) {
     const dataSend = {
       ...data,
       id: postId,
-    }
+    };
     try {
       const response = await fetch(`/api/posts/${postId}`, {
         method: "PATCH",
@@ -84,9 +89,9 @@ export const FormsPost = ({
   }
 
   async function onSubmit(data: typeof formsValues) {
-    if(titlePage.includes("Edite")) {
+    if (titlePage.includes("Edite")) {
       onSubmitPatch(data);
-    }else{
+    } else {
       onSubmitPost(data);
     }
   }

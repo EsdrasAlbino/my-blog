@@ -34,9 +34,6 @@ export const RegisterComponent = () => {
       body: JSON.stringify(sendData),
     });
 
-    const response = await request.json();
-
-    console.log("USER REGISTER FORM", response);
 
     if (!request.ok) {
       setOpen(true);

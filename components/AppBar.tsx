@@ -41,7 +41,7 @@ export default function AppAppBar() {
   const { status } = useContext(SessionContext);
 
   const router = useRouter();
-  console.log(status);
+
   const isLogged = status === "authenticated";
 
   const toggleDrawer = (newOpen: boolean) => () => {

@@ -2,15 +2,19 @@
 import { FormsPost } from "@/components/complexUI/formsPost/FormsPost";
 import { Post } from "@/lib/types";
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 
-interface CreatePostProps {
-  slug: string;
-}
 
-export default function CreatePost({ slug }: CreatePostProps) {
+
+export default function CreatePost() {
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+
   const [post, setPost] = useState<Post | null>(null);
+  const { slug } = useParams();	
+
+  console.log("slug", slug);
 
   useEffect(() => {
     getPost();
@@ -19,11 +23,22 @@ export default function CreatePost({ slug }: CreatePostProps) {
   const getPost = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(`/api/posts?slug=${slug}`);
+
+      const response = await fetch(`/api/posts/${slug}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: slug }),
+
+      });
       const post = await response.json();
+      console.log("post", post);
       setPost(post[0]);
 
       setIsLoading(false);
+
+
     } catch (error) {
       console.log("error", error);
     }

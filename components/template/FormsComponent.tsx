@@ -1,7 +1,7 @@
 "use client";
 
 import { wordsTranslate } from "@/lib/translate";
-import { Box, Button, OutlinedInput, Stack, TextField } from "@mui/material";
+import { Box, Button, Stack, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 
 interface IFormsProps<T> {

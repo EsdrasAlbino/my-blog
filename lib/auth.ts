@@ -40,7 +40,6 @@ export const options: NextAuthOptions = {
           throw new Error("Invalid credentials");
         }
         const isMatch = await bcrypt.compare(password, user.password);
-        console.log("A", credentials);
         if (!isMatch) {
           throw new Error("Invalid credentials");
         }

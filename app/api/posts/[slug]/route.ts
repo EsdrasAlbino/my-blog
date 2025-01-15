@@ -2,11 +2,13 @@ import { prismaInstance } from "@/lib/prismaClient";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const id = request?.nextUrl.searchParams.get("id");
+  const data = await request.json();
+  const { id } = data;
 
   if (!id) {
     return NextResponse.json("Invalid data.", { status: 400 });
   }
+
   const post = await prismaInstance.post.findUnique({
     where: {
       id,

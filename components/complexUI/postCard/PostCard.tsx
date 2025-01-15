@@ -28,7 +28,7 @@ const SyledCard = styled(Card)(({ theme }) => ({
   flexDirection: "column",
   padding: 0,
   height: "100%",
-  backgroundColor: (theme.vars || theme).palette.background.paper,
+  backgroundColor: theme.palette.background.paper,
   "&:hover": {
     backgroundColor: "transparent",
     cursor: "pointer",
@@ -73,11 +73,12 @@ const style = {
   pb: 3,
   display: "flex",
   flexDirection: "column",
-  gap:5,
+  gap: 5,
   alignItems: "",
 };
 
 export const PostCard = ({ card, index }: { card: Post; index: number }) => {
+  
   const [focusedCardIndex, setFocusedCardIndex] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -112,12 +113,11 @@ export const PostCard = ({ card, index }: { card: Post; index: number }) => {
         const error = await response.json();
         throw new Error(error.message || "Failed to delete post");
       }
-
-      const result = await response.json();
     } catch (error) {
       console.error(error);
     }
   };
+
 
   return (
     <>
@@ -128,11 +128,19 @@ export const PostCard = ({ card, index }: { card: Post; index: number }) => {
         aria-describedby="parent-modal-description"
       >
         <Box sx={{ ...style, width: 400 }}>
-          <h2 id="parent-modal-title" style={{color:'darkgray'}}>Tem certeza que quer excluir seu post?</h2>
-          <p id="parent-modal-description" color="text.secondary" style={{color:'darkgray'}}>
-          Clicando no botão Delete você irá excluir o post permanentemente.
+          <h2 id="parent-modal-title" style={{ color: "darkgray" }}>
+            Tem certeza que quer excluir seu post?
+          </h2>
+          <p
+            id="parent-modal-description"
+            color="text.secondary"
+            style={{ color: "darkgray" }}
+          >
+            Clicando no botão Delete você irá excluir o post permanentemente.
           </p>
-          <Button onClick={handleDelete} color="error">Delete</Button>
+          <Button onClick={handleDelete} color="error">
+            Delete
+          </Button>
         </Box>
       </Modal>
       <Grid size={{ xs: 12, md: index < 2 ? 6 : 4 }} key={card.title}>
@@ -183,7 +191,9 @@ export const PostCard = ({ card, index }: { card: Post; index: number }) => {
               </Button>
             </StyledContainerIcon>
           </SyledCardContent>
-          {card.authors && <Author authors={card.authors} />}
+          {card.author && (
+            <Author authors={[{ avatar: card.image, name: card.author }]} />
+          )}
         </SyledCard>
       </Grid>
     </>
