@@ -36,3 +36,20 @@ export async function PATCH(request: NextRequest) {
 
   return NextResponse.json(post);
 }
+
+export async function DELETE(request: NextRequest) {
+  const data = await request.json();
+  const { id } = data;
+
+  if (!id) {
+    return NextResponse.json("Invalid data.", { status: 400 });
+  }
+
+  const post = await prismaInstance.post.delete({
+    where: {
+      id,
+    },
+  });
+
+  return NextResponse.json(post);
+}

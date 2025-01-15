@@ -22,12 +22,12 @@ export const FormsPost = ({
   useEffect(() => {
     getUserLocal();
   }, [data?.user?.email]);
+  
   const formsValuesLocal = formsValues || {
     title: "",
     content: "",
     images: "",
     published: true,
-    //authorId: "",
   };
 
   const getUserLocal = async () => {

@@ -87,7 +87,7 @@ export default function MainContent() {
         </Box>
       </Box>
       <Grid container spacing={2} columns={12}>
-        {posts.map((card, index) => (
+        {dataMock.cardData.map((card, index) => (
           <PostCard card={card} index={index} key={card.title} />
         ))}
       </Grid>

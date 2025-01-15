@@ -18,7 +18,7 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map(name: "post")
+  @@map(name: "posts")
 }
 
 model User {
