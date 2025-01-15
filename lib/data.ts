@@ -1,7 +1,8 @@
 export const dataMock = {
   cardData: [
     {
-      img: "https://picsum.photos/800/450?random=1",
+      id: "1",
+      image: "https://picsum.photos/800/450?random=1",
       tag: "Engineering",
       title: "Revolutionizing software development with cutting-edge tools",
       description:
@@ -12,7 +13,8 @@ export const dataMock = {
       ],
     },
     {
-      img: "https://picsum.photos/800/450?random=2",
+      id: "2",
+      image: "https://picsum.photos/800/450?random=2",
       tag: "Product",
       title: "Innovative product features that drive success",
       description:
@@ -20,7 +22,8 @@ export const dataMock = {
       authors: [{ name: "Erica Johns", avatar: "/static/images/avatar/6.jpg" }],
     },
     {
-      img: "https://picsum.photos/800/450?random=3",
+      id: "3",
+      image: "https://picsum.photos/800/450?random=3",
       tag: "Design",
       title: "Designing for the future: trends and insights",
       description:
@@ -30,7 +33,8 @@ export const dataMock = {
       ],
     },
     {
-      img: "https://picsum.photos/800/450?random=4",
+      id: "4",
+      image: "https://picsum.photos/800/450?random=4",
       tag: "Company",
       title: "Our company's journey: milestones and achievements",
       description:
@@ -38,7 +42,8 @@ export const dataMock = {
       authors: [{ name: "Cindy Baker", avatar: "/static/images/avatar/3.jpg" }],
     },
     {
-      img: "https://picsum.photos/800/450?random=45",
+      id: "5",
+      image: "https://picsum.photos/800/450?random=45",
       tag: "Engineering",
       title: "Pioneering sustainable engineering solutions",
       description:
@@ -49,7 +54,8 @@ export const dataMock = {
       ],
     },
     {
-      img: "https://picsum.photos/800/450?random=6",
+      id: "6",
+      image: "https://picsum.photos/800/450?random=6",
       tag: "Product",
       title: "Maximizing efficiency with our latest product updates",
       description:

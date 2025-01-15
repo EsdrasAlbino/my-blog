@@ -15,7 +15,7 @@ export default function Home() {
         <MainContent />
         {/* <Latest /> */}
       </Container>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

@@ -56,7 +56,9 @@ export default function AppAppBar() {
     router.push("/register");
   };
 
-  const createPost = () => {};
+  const createPost = () => {
+    router.push("blog/create");
+  };
 
   return (
     <AppBar
@@ -98,21 +100,22 @@ export default function AppAppBar() {
             }}
           >
             {isLogged ? (
-             <><Button
-                style={{ display: "flex", alignItems: "center", gap: 5 }}
-                color="primary"
-                variant="outlined"
-                size="small"
-                onClick={createPost}
-              >
-                Novo post
-                <AddCircleOutlineRoundedIcon />
-              </Button>
-              <Button
-                color="secondary"
-                variant="text"
-                size="small"
-                onClick={navigationLogin}
+              <>
+                <Button
+                  style={{ display: "flex", alignItems: "center", gap: 5 }}
+                  color="primary"
+                  variant="outlined"
+                  size="small"
+                  onClick={createPost}
+                >
+                  Novo post
+                  <AddCircleOutlineRoundedIcon />
+                </Button>
+                <Button
+                  color="secondary"
+                  variant="text"
+                  size="small"
+                  onClick={navigationLogin}
                 >
                   Logout
                 </Button>
@@ -164,23 +167,66 @@ export default function AppAppBar() {
                     <CloseRoundedIcon />
                   </IconButton>
                 </Box>
-                <MenuItem>Features</MenuItem>
-                <MenuItem>Testimonials</MenuItem>
-                <MenuItem>Highlights</MenuItem>
-                <MenuItem>Pricing</MenuItem>
-                <MenuItem>FAQ</MenuItem>
-                <MenuItem>Blog</MenuItem>
+                {dataMock.optionsNavBar.map((options) => {
+                  return (
+                    <MenuItem key={options.label}>{options.label}</MenuItem>
+                  );
+                })}
                 <Divider sx={{ my: 3 }} />
-                <MenuItem>
-                  <Button color="primary" variant="contained" fullWidth>
-                    Sign up
-                  </Button>
-                </MenuItem>
-                <MenuItem>
-                  <Button color="primary" variant="outlined" fullWidth>
-                    Sign in
-                  </Button>
-                </MenuItem>
+
+                {isLogged ? (
+                  <>
+                    <MenuItem>
+                      <Button
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 5,
+                        }}
+                        color="primary"
+                        variant="outlined"
+                        size="small"
+                        onClick={createPost}
+                      >
+                        Novo post
+                        <AddCircleOutlineRoundedIcon />
+                      </Button>
+                    </MenuItem>
+                    <MenuItem>
+                      <Button
+                        color="secondary"
+                        variant="text"
+                        size="small"
+                        onClick={navigationLogin}
+                      >
+                        Logout
+                      </Button>
+                    </MenuItem>
+                  </>
+                ) : (
+                  <>
+                    <MenuItem>
+                      <Button
+                        color="primary"
+                        variant="text"
+                        size="small"
+                        onClick={navigationLogin}
+                      >
+                        Sign in
+                      </Button>
+                    </MenuItem>
+                    <MenuItem>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        size="small"
+                        onClick={navigationRegister}
+                      >
+                        Sign up
+                      </Button>
+                    </MenuItem>
+                  </>
+                )}
               </Box>
             </Drawer>
           </Box>

@@ -3,20 +3,29 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   const data = await request.json();
-  const { title, content, published, authorId } = data;
 
-  if (!title || !content) {
+  if (!data || typeof data !== "object") {
+    return NextResponse.json(
+      { error: "Invalid request body" },
+      { status: 400 }
+    );
+  }
+
+  const { title, content, published, authorId, images } = data;
+  console.log("data", data);
+  if (!title || !content || !images) {
     return NextResponse.json("Invalid data.", { status: 400 });
   }
 
   const post = await prismaInstance.post.create({
     data: {
-      title,
-      content,
+      ...data,
+      image: images || "",
+      authorId: authorId || "",
       published: published || false,
-      authorId: authorId || undefined,
     },
   });
+  console.log("post", post);
 
   return NextResponse.json(post);
 }

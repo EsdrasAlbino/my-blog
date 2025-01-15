@@ -17,6 +17,8 @@ model Post {
   authorId String @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map(name: "post")
 }
 
 model User {

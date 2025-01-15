@@ -8,9 +8,7 @@ import { Alert, Snackbar } from "@mui/material";
 const formsValues = {
   username: "",
   email: "",
-  confirm_email: "",
   password: "",
-  confirm_password: "",
 };
 
 export const RegisterComponent = () => {
