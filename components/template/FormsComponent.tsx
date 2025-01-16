@@ -1,7 +1,7 @@
 "use client";
 
 import { wordsTranslate } from "@/lib/translate";
-import { Alert, Box, Button, Snackbar, Stack, TextField } from "@mui/material";
+import { Alert, Box, Button, FormLabel, Snackbar, Stack, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -41,17 +41,19 @@ export const FormsComponent = <T extends Record<string, string>>({
 
   const inputs = Object.keys(FormValues).map((key) => {
     return (
-      <TextField
-        key={key}
-        label={wordsTranslate[key] || key}
-        type={key}
-        {...register(key, {
-          required: `${key} is required`,
-        })}
-        variant="filled"
-        error={!!errors[key]}
-        helperText={errors[key]?.message}
-      />
+
+        <TextField
+          key={key}
+          label={wordsTranslate[key] || key}
+          type={key}
+          {...register(key, {
+            required: `${key} is required`,
+          })}
+          variant="outlined"
+          error={!!errors[key]}
+          helperText={errors[key]?.message}
+        />
+
     );
   });
 
@@ -60,10 +62,8 @@ export const FormsComponent = <T extends Record<string, string>>({
       sx={{
         display: "flex",
         flexDirection: "column",
-        gap: 10,
-        maxWidth: 400,
-        margin: "auto",
-        padding: 2,
+        width: "100%",
+        gap: 2,
       }}
     >
       <Snackbar open={openError} autoHideDuration={4000} onClose={handleError}>

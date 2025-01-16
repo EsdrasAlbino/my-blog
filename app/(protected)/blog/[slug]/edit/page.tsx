@@ -24,7 +24,7 @@ export default function CreatePost() {
     try {
       setIsLoading(true);
 
-      const response = await fetch(`/api/posts/${slug}?id=${slug}`, {
+      const response = await fetch(`/api/posts/${slug}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
