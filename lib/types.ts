@@ -12,3 +12,13 @@ export interface Post extends SendPost {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  image: string;
+  posts: Post[];
+  createdAt: string;
+  updatedAt: string;
+}

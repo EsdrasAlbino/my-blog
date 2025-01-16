@@ -1,11 +1,10 @@
 "use client";
 
+import { Stack, styled } from "@mui/material";
 import { signIn } from "next-auth/react";
-import { FormsComponent } from "./template/FormsComponent";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Snackbar from "@mui/material/Snackbar";
-import { Alert, Stack, styled } from "@mui/material";
+import { useState } from "react";
+import { FormsComponent } from "./template/FormsComponent";
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
   height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
@@ -37,7 +36,8 @@ const formsValues = {
 
 export const LoginComponent = () => {
   const [data, setData] = useState<typeof formsValues>(formsValues);
-  const [open, setOpen] = useState(false);
+  const [openError, setOpenError] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);	
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
@@ -51,8 +51,9 @@ export const LoginComponent = () => {
     });
 
     if (res?.error) {
-      setOpen(true);
+      setOpenError(true);
     } else {
+      setOpenSuccess(true);
       router.push("/");
     }
     setData(formsValues);
@@ -60,26 +61,25 @@ export const LoginComponent = () => {
   }
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenError(false);
   };
+
+  const handleSuccess = () => {
+    setOpenSuccess(false);
+  }
 
   return (
     <SignInContainer>
-      <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
-        <Alert
-          onClose={handleClose}
-          severity="error"
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          This is a success Alert inside a Snackbar!
-        </Alert>
-      </Snackbar>
       <FormsComponent
         title="Login"
         FormValues={formsValues}
         buttonText="Login"
         onSubmit={onSubmit}
+        openError={openError}
+        handleError={handleClose}
+        openSucess={openSuccess}
+        handleSuccess={handleSuccess}
+        isLoading={isLoading}
       />
     </SignInContainer>
   );

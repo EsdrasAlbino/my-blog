@@ -1,7 +1,9 @@
 "use client";
 import AppAppBar from "@/components/AppBar";
 import { FormsComponent } from "@/components/template/FormsComponent";
+import { User } from "@/lib/types";
 import { SessionContext } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
 export const FormsPost = ({
@@ -12,12 +14,18 @@ export const FormsPost = ({
 }: {
   titlePage: string;
   buttonText: string;
-  formsValues?: { [key: string]: string };
+  formsValues?: { [key: string]: string | boolean };
   postId?: string;
 }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [openError, setOpenError] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { data } = useContext(SessionContext);
+  const router = useRouter();
+
+  const session = useContext(SessionContext);
+  const data = session?.data;
 
   useEffect(() => {
     getUserLocal();
@@ -43,10 +51,12 @@ export const FormsPost = ({
   };
 
   async function onSubmitPatch(data: typeof formsValues) {
+    setIsLoading(true);
     const dataSend = {
       ...data,
       id: postId,
     };
+    console.log("dataSend", dataSend);
     try {
       const response = await fetch(`/api/posts/${postId}`, {
         method: "PATCH",
@@ -61,16 +71,23 @@ export const FormsPost = ({
         throw new Error(error.message || "Failed to update post");
       }
 
-      const result = await response.json();
-    } catch (error) {}
+      setOpenSuccess(true);
+    } catch (error) {
+      setOpenError(true);
+      console.error(error);
+    }finally{
+      setIsLoading(false);
+    }
   }
 
   async function onSubmitPost(data: typeof formsValues) {
+    setIsLoading(true);
     const dataSend = {
       ...data,
-      authorId: user?.id || "",
+      authorId: user?.id ?? "",
     };
     try {
+
       const response = await fetch("/api/posts", {
         method: "POST",
         headers: {
@@ -84,8 +101,13 @@ export const FormsPost = ({
         throw new Error(error.message || "Failed to create post");
       }
 
-      const result = await response.json();
-    } catch (error) {}
+      setOpenSuccess(true);
+    } catch (error) {
+      setOpenError(true);
+      console.error(error);
+    }finally{
+      setIsLoading(false);
+    }
   }
 
   async function onSubmit(data: typeof formsValues) {
@@ -96,6 +118,15 @@ export const FormsPost = ({
     }
   }
 
+  const handleClose = () => {
+    setOpenError(false);
+  };
+
+  const handleSuccess = () => {
+    setOpenSuccess(false);
+    router.push("/");
+  };
+
   return (
     <>
       <AppAppBar />
@@ -104,6 +135,12 @@ export const FormsPost = ({
         onSubmit={onSubmit}
         buttonText={buttonText}
         title={titlePage}
+        handleError={handleClose}
+        openError={openError}
+        openSucess={openSuccess}
+        handleSucess={handleSuccess}
+        messageSuccess="Post criado com sucesso, encaminhando para a página inicial..."
+        isLoading={isLoading}
       />
       <></>
     </>

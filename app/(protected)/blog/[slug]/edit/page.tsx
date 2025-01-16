@@ -24,20 +24,18 @@ export default function CreatePost() {
     try {
       setIsLoading(true);
 
-      const response = await fetch(`/api/posts/${slug}`, {
+      const response = await fetch(`/api/posts/${slug}?id=${slug}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id: slug }),
 
       });
       const post = await response.json();
       console.log("post", post);
-      setPost(post[0]);
+      setPost(post);
 
       setIsLoading(false);
-
 
     } catch (error) {
       console.log("error", error);
