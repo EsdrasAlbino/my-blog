@@ -7,7 +7,6 @@ import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { PostCard } from "../complexUI/postCard/PostCard";
-import { Search } from "../complexUI/search/Search";
 
 export default function MainContent() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -42,7 +41,7 @@ export default function MainContent() {
           overflow: "auto",
         }}
       >
-        <Search />
+        {/* <Search /> */}
       </Box>
       <Box
         sx={{
@@ -82,7 +81,7 @@ export default function MainContent() {
             overflow: "auto",
           }}
         >
-          <Search />
+          {/* <Search /> */}
         </Box>
       </Box>
       <Grid container spacing={2} columns={12}>

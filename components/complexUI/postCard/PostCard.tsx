@@ -10,11 +10,12 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { Author } from "../author/Author";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Post } from "@/lib/types";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
 import { useRouter } from "next/navigation";
+import { SessionContext } from "next-auth/react";
 
 const StyledContainerIcon = styled("div")({
   gap: 8,
@@ -78,9 +79,14 @@ const style = {
 };
 
 export const PostCard = ({ card, index }: { card: Post; index: number }) => {
-  
   const [focusedCardIndex, setFocusedCardIndex] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
+
+  const sessionContext = useContext(SessionContext);
+
+  const status = sessionContext?.status;
+
+  const authenticated = status === "authenticated";
 
   const router = useRouter();
 
@@ -117,7 +123,6 @@ export const PostCard = ({ card, index }: { card: Post; index: number }) => {
       console.error(error);
     }
   };
-
 
   return (
     <>
@@ -179,16 +184,20 @@ export const PostCard = ({ card, index }: { card: Post; index: number }) => {
             </div>
 
             <StyledContainerIcon>
-              <Button onClick={handleOpen}>
-                <DeleteOutlineIcon />
-              </Button>
-              <Button
-                onClick={() => {
-                  router.push(`/blog/${card.id}/edit`);
-                }}
-              >
-                <EditIcon />
-              </Button>
+              {authenticated && (
+                <>
+                  <Button onClick={handleOpen}>
+                    <DeleteOutlineIcon />
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      router.push(`/blog/${card.id}/edit`);
+                    }}
+                  >
+                    <EditIcon />
+                  </Button>
+                </>
+              )}
             </StyledContainerIcon>
           </SyledCardContent>
           {card.author && (
