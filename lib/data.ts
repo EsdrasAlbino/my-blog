@@ -88,15 +88,7 @@ export const dataMock = {
     {
       label: "Todas as categorias",
       size: "medium",
-    },
-    {
-      label: "Categoria 2",
-      size: "medium",
-      sx: {
-        backgroundColor: "transparent",
-        border: "none",
-      },
-    },
+    }
   ],
   optionsNavBar:[
     {
