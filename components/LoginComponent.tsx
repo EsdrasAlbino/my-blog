@@ -5,15 +5,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FormsComponent } from "./template/FormsComponent";
 
-
-
 const formsValues = {
   email: "",
   password: "",
 };
 
 export const LoginComponent = () => {
-  const [data, setData] = useState<typeof formsValues>(formsValues);
   const [openError, setOpenError] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -33,7 +30,6 @@ export const LoginComponent = () => {
       setOpenSuccess(true);
       router.push("/");
     }
-    setData(formsValues);
     setIsLoading(false);
   }
 
@@ -46,16 +42,17 @@ export const LoginComponent = () => {
   };
 
   return (
-        <FormsComponent
-          title="Login"
-          FormValues={formsValues}
-          buttonText="Login"
-          onSubmit={onSubmit}
-          openError={openError}
-          handleError={handleClose}
-          openSucess={openSuccess}
-          handleSuccess={handleSuccess}
-          isLoading={isLoading}
-        />
+    <FormsComponent
+      title="Login"
+      FormValues={formsValues}
+      buttonText="Login"
+      // @ts-ignore
+      onSubmit={onSubmit}
+      openError={openError}
+      handleError={handleClose}
+      openSucess={openSuccess}
+      handleSuccess={handleSuccess}
+      isLoading={isLoading}
+    />
   );
 };

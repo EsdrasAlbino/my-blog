@@ -131,6 +131,7 @@ export const FormsPost = ({
     <>
       <AppAppBar />
       <FormsComponent
+      // @ts-ignore
         FormValues={formsValuesLocal}
         onSubmit={onSubmit}
         buttonText={buttonText}

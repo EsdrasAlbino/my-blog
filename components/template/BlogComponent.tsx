@@ -68,6 +68,7 @@ export default function MainContent() {
               onClick={handleClick}
               size={category.size as "small" | "medium"}
               label={category.label}
+              // @ts-ignore
               sx={category?.sx}
             />
           ))}

@@ -12,7 +12,6 @@ const formsValues = {
 };
 
 export const RegisterComponent = () => {
-  const [data, setData] = useState<typeof formsValues>(formsValues);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -24,7 +23,7 @@ export const RegisterComponent = () => {
       name: data.username,
       email: data.email,
       password: data.password,
-    }
+    };
 
     const request = await fetch("/api/users", {
       method: "POST",
@@ -34,14 +33,12 @@ export const RegisterComponent = () => {
       body: JSON.stringify(sendData),
     });
 
-
     if (!request.ok) {
       setOpen(true);
     } else {
       router.push("/login");
     }
 
-    setData(formsValues);
     setIsLoading(false);
   }
 
@@ -51,6 +48,7 @@ export const RegisterComponent = () => {
 
   return (
     <>
+      {isLoading && <p>Loading...</p>}
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert
           onClose={handleClose}
@@ -62,10 +60,17 @@ export const RegisterComponent = () => {
         </Alert>
       </Snackbar>
       <FormsComponent
+        handleError={() => {}}
+        handleSucess={() => {}}
+        messageError=""
+        isLoading={isLoading}
+        messageSuccess=""
         title="Registro"
         FormValues={formsValues}
         buttonText="Register"
         onSubmit={onSubmit}
+        openError={false}
+        openSucess={false}
       />
     </>
   );

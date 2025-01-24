@@ -1,5 +1,4 @@
 import AppAppBar from "@/components/AppBar";
-import Footer from "@/components/Footer";
 import MainContent from "@/components/template/BlogComponent";
 import { Container } from "@mui/material";
 

@@ -4,15 +4,11 @@ import { Post } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
-
-
 export default function CreatePost() {
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-
   const [post, setPost] = useState<Post | null>(null);
-  const { slug } = useParams();	
+  const { slug } = useParams();
 
   console.log("slug", slug);
 
@@ -29,14 +25,12 @@ export default function CreatePost() {
         headers: {
           "Content-Type": "application/json",
         },
-
       });
       const post = await response.json();
       console.log("post", post);
       setPost(post);
 
       setIsLoading(false);
-
     } catch (error) {
       console.log("error", error);
     }

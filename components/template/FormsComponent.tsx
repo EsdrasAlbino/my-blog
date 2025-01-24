@@ -85,6 +85,7 @@ export const FormsComponent = <T extends Record<string, string>>({
   isLoading,
 }: IFormsProps<T>) => {
   const form = useForm<typeof FormValues>({
+    // @ts-ignore
     defaultValues: FormValues,
   });
 
@@ -97,11 +98,13 @@ export const FormsComponent = <T extends Record<string, string>>({
         key={key}
         label={wordsTranslate[key] || key}
         type={key}
+        // @ts-ignore
         {...register(key, {
           required: `${key} is required`,
         })}
         variant="outlined"
         error={!!errors[key]}
+        // @ts-ignore
         helperText={errors[key]?.message}
       />
     );
