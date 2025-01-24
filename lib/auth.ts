@@ -26,6 +26,7 @@ export const options: NextAuthOptions = {
         if (!credentials) {
           throw new Error("Credentials not provided");
         }
+        
 
         const { email, password } = credentials;
 
@@ -34,7 +35,7 @@ export const options: NextAuthOptions = {
         }
 
         const user = await prismaInstance.user.findUnique({ where: { email } });
-
+        
         if (!user) {
           throw new Error("Invalid credentials");
         }

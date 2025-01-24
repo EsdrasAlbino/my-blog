@@ -8,9 +8,7 @@ import { Alert, Snackbar } from "@mui/material";
 const formsValues = {
   username: "",
   email: "",
-  confirm_email: "",
   password: "",
-  confirm_password: "",
 };
 
 export const RegisterComponent = () => {
@@ -36,9 +34,6 @@ export const RegisterComponent = () => {
       body: JSON.stringify(sendData),
     });
 
-    const response = await request.json();
-
-    console.log("USER REGISTER FORM", response);
 
     if (!request.ok) {
       setOpen(true);

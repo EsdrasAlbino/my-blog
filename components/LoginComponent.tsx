@@ -1,11 +1,11 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { FormsComponent } from "./template/FormsComponent";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Snackbar from "@mui/material/Snackbar";
-import { Alert } from "@mui/material";
+import { useState } from "react";
+import { FormsComponent } from "./template/FormsComponent";
+
+
 
 const formsValues = {
   email: "",
@@ -14,13 +14,13 @@ const formsValues = {
 
 export const LoginComponent = () => {
   const [data, setData] = useState<typeof formsValues>(formsValues);
-  const [open, setOpen] = useState(false);
+  const [openError, setOpenError] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
   async function onSubmit(data: typeof formsValues) {
     setIsLoading(true);
-
 
     const res = await signIn<"credentials">("credentials", {
       ...data,
@@ -28,41 +28,34 @@ export const LoginComponent = () => {
     });
 
     if (res?.error) {
-      setOpen(true);
+      setOpenError(true);
     } else {
+      setOpenSuccess(true);
       router.push("/");
     }
-
-    // setTimeout(() => {
-    //   setIsLoading(false);
-    // }, 5000);
-
     setData(formsValues);
     setIsLoading(false);
   }
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenError(false);
+  };
+
+  const handleSuccess = () => {
+    setOpenSuccess(false);
   };
 
   return (
-    <>
-      <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
-        <Alert
-          onClose={handleClose}
-          severity="error"
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          This is a success Alert inside a Snackbar!
-        </Alert>
-      </Snackbar>
-      <FormsComponent
-        title="Login"
-        FormValues={formsValues}
-        buttonText="Login"
-        onSubmit={onSubmit}
-      />
-    </>
+        <FormsComponent
+          title="Login"
+          FormValues={formsValues}
+          buttonText="Login"
+          onSubmit={onSubmit}
+          openError={openError}
+          handleError={handleClose}
+          openSucess={openSuccess}
+          handleSuccess={handleSuccess}
+          isLoading={isLoading}
+        />
   );
 };

@@ -8,7 +8,6 @@ export async function POST(request: NextRequest){
 
     const data = await request.json()
     const { name, email, password } = data
-    console.log("ROUTE HANDLER", data)
 
     if(!name || !email || !password){
         return NextResponse.json("Dados inválidos.", { status: 400})
@@ -24,7 +23,6 @@ export async function POST(request: NextRequest){
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
-    console.log("HASHED PASSWORD", hashedPassword)
     
     const user = await prismaInstance.user.create({
         data: {
@@ -36,4 +34,17 @@ export async function POST(request: NextRequest){
 
 
     return NextResponse.json(user)
+}
+
+export async function GET(request: NextRequest){
+    const email = request.nextUrl.searchParams.get("email")
+    if(!email){
+        return NextResponse.json({ error: "E-mail não informado."}, { status: 400})
+    }
+    const users = await prismaInstance.user.findUnique({
+        where: {
+            email: email
+        }
+    })
+    return NextResponse.json(users)
 }
