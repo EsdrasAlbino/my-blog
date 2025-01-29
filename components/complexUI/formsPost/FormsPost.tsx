@@ -6,6 +6,7 @@ import { SessionContext } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
+
 export const FormsPost = ({
   titlePage,
   buttonText,
@@ -20,7 +21,12 @@ export const FormsPost = ({
   const [user, setUser] = useState<User | null>(null);
   const [openError, setOpenError] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+
+
+  const [isLoading, setIsLoading] = useState<{ [key: string]: boolean }>({
+    title: false,
+    content: false,
+  });
 
   const router = useRouter();
 
@@ -31,12 +37,12 @@ export const FormsPost = ({
     getUserLocal();
   }, [data?.user?.email]);
 
-  const formsValuesLocal = formsValues || {
+     const formsValuesLocal = formsValues || {
     title: "",
     content: "",
     images: "",
     published: true,
-  };
+  }; 
 
   const getUserLocal = async () => {
     try {
@@ -51,7 +57,7 @@ export const FormsPost = ({
   };
 
   async function onSubmitPatch(data: typeof formsValues) {
-    setIsLoading(true);
+    setIsLoading((prev) => ({ ...prev, global: true }));
     const dataSend = {
       ...data,
       id: postId,
@@ -75,19 +81,18 @@ export const FormsPost = ({
     } catch (error) {
       setOpenError(true);
       console.error(error);
-    }finally{
-      setIsLoading(false);
+    } finally {
+      setIsLoading((prev) => ({ ...prev, global: false }));
     }
   }
 
   async function onSubmitPost(data: typeof formsValues) {
-    setIsLoading(true);
+    setIsLoading((prev) => ({ ...prev, global: true }));
     const dataSend = {
       ...data,
       authorId: user?.id ?? "",
     };
     try {
-
       const response = await fetch("/api/posts", {
         method: "POST",
         headers: {
@@ -105,8 +110,8 @@ export const FormsPost = ({
     } catch (error) {
       setOpenError(true);
       console.error(error);
-    }finally{
-      setIsLoading(false);
+    } finally {
+      setIsLoading((prev) => ({ ...prev, global: false }));
     }
   }
 
@@ -127,11 +132,12 @@ export const FormsPost = ({
     router.push("/");
   };
 
+
   return (
     <>
       <AppAppBar />
       <FormsComponent
-      // @ts-ignore
+        // @ts-ignore
         FormValues={formsValuesLocal}
         onSubmit={onSubmit}
         buttonText={buttonText}
@@ -141,9 +147,10 @@ export const FormsPost = ({
         openSucess={openSuccess}
         handleSucess={handleSuccess}
         messageSuccess="Post criado com sucesso, encaminhando para a página inicial..."
-        isLoading={isLoading}
+        isLoading={isLoading.title || isLoading.content}
+        isAi
       />
-      <></>
+
     </>
   );
 };
