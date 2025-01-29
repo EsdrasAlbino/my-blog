@@ -1,21 +1,21 @@
 "use client";
 
+import { openai } from "@/lib/openai";
 import { wordsTranslate } from "@/lib/translate";
 import {
   Alert,
   Box,
   Button,
-  FormLabel,
   Snackbar,
   Stack,
   styled,
   TextField,
+  Typography,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
-import CircularProgress from "@mui/material/CircularProgress";
 import MuiCard from "@mui/material/Card";
-import { TextareaAutosize } from '@mui/base/TextareaAutosize';
-
+import CircularProgress from "@mui/material/CircularProgress";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 interface IFormsProps<T> {
   FormValues: T;
@@ -29,6 +29,7 @@ interface IFormsProps<T> {
   openSucess: boolean;
   handleSucess: () => void;
   isLoading: boolean;
+  isAi?: boolean;
 }
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
@@ -81,7 +82,7 @@ const componentMapping: ComponentMap = {
   text: TextField,
   email: TextField,
   password: TextField,
-  content: TextareaAutosize
+  content: TextField,
   // Add more components as needed
 };
 
@@ -97,39 +98,131 @@ export const FormsComponent = <T extends Record<string, string>>({
   openSucess,
   handleSucess,
   isLoading,
+  isAi,
 }: IFormsProps<T>) => {
   const form = useForm<typeof FormValues>({
     // @ts-ignore
     defaultValues: FormValues,
   });
 
-  const { register, handleSubmit, formState } = form;
+  const [suggestions, setSuggestions] = useState<Record<string, string>>({
+    title: "",
+    content: "",
+  });
+  const [isLoadingAi, setIsLoadingAi] = useState<Record<string, boolean>>({
+    title: false,
+    content: false,
+  });
+
+  const { register, handleSubmit, formState, getValues } = form;
   const { errors } = formState;
 
-  const inputs = Object.keys(FormValues).map((key) => {
+  const getSuggestion = async (field: keyof FormValues) => {
+    try {
+      setIsLoadingAi((prev) => ({ ...prev, [field]: true }));
 
+      console.log("FormValues", getValues());
+
+      const prompt =
+        field === "title"
+          ? `Sugira alguns títulos baseado nesse conteudo: ${getValues(
+              "content"
+            )}`
+          : `Seguira alguns conteudos relevantes baseados nesse título: ${getValues(
+              "title"
+            )}`;
+
+      const response = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+      });
+
+      const suggestion = response.choices[0]?.message?.content || "";
+      setSuggestions((prev) => ({
+        ...prev,
+        [field]: suggestion,
+      }));
+    } catch (error) {
+      console.error("Error getting suggestion:", error);
+    } finally {
+      setIsLoadingAi((prev) => ({ ...prev, [field]: false }));
+    }
+  };
+
+  const inputs = Object.keys(FormValues).map((key) => {
     const Component = componentMapping[key] || TextField;
 
     return (
-      <Component
-        key={key}
-        label={wordsTranslate[key] || key}
-        type={key}
-        // @ts-ignore
-        {...register(key, {
-          required: `${key} is required`,
-        })}
-        variant="outlined"
-        error={!!errors[key]}
-        // @ts-ignore
-        helperText={errors[key]?.message}
-      />
+      <>
+        <Component
+          key={key}
+          label={wordsTranslate[key] || key}
+          type={key}
+          // @ts-ignore
+          {...register(key, {
+            required: `${key} is required`,
+          })}
+          variant="outlined"
+          error={!!errors[key]}
+          // @ts-ignore
+          helperText={errors[key]?.message}
+          multiline={key == "content"}
+          rows={key == "content" ? 4 : 1}
+        />
+        {suggestions.title && key == "title" && (
+          <>
+            <Typography>{suggestions.title}</Typography>
+          </>
+        )}
+        {suggestions.content && key == "content" && (
+          <Typography>{suggestions.content}</Typography>
+        )}
+
+        {isLoadingAi.title && key == "title" && (
+          <CircularProgress
+            style={{
+              alignSelf: "center",
+            }}
+          />
+        )}
+
+        {isLoadingAi.content && key == "content" && (
+          <CircularProgress
+            style={{
+              alignSelf: "center",
+            }}
+          />
+        )}
+      </>
     );
   });
 
   return (
     <SignInContainer>
-      <Card>
+      <Card
+        sx={{
+          maxHeight: "80vh", // Set maximum height relative to viewport
+          overflow: "auto", // Enable scrolling
+          "&::-webkit-scrollbar": {
+            width: "8px",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "#f1f1f1",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "#888",
+            borderRadius: "4px",
+            "&:hover": {
+              background: "#555",
+            },
+          },
+        }}
+      >
         <Box
           sx={{
             display: "flex",
@@ -168,11 +261,26 @@ export const FormsComponent = <T extends Record<string, string>>({
             </Alert>
           </Snackbar>
           <h1 style={{}}>{title}</h1>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form
+            onSubmit={handleSubmit((data) => {
+              onSubmit(data);
+            })}
+          >
             <Stack
               style={{ display: "flex", flexDirection: "column", gap: 10 }}
             >
               {inputs}
+              {isAi && (
+                <Button
+                  onClick={() => {
+                    getSuggestion("title");
+                    getSuggestion("content");
+                  }}
+                >
+                  Sugestão ai
+                </Button>
+              )}
+
               <Button type="submit" variant="contained">
                 {buttonText}
               </Button>
