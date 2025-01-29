@@ -14,6 +14,8 @@ import {
 import { useForm } from "react-hook-form";
 import CircularProgress from "@mui/material/CircularProgress";
 import MuiCard from "@mui/material/Card";
+import { TextareaAutosize } from '@mui/base/TextareaAutosize';
+
 
 interface IFormsProps<T> {
   FormValues: T;
@@ -71,6 +73,18 @@ const Card = styled(MuiCard)(({ theme }) => ({
   }),
 }));
 
+type ComponentMap = {
+  [key: string]: typeof TextField | any;
+};
+
+const componentMapping: ComponentMap = {
+  text: TextField,
+  email: TextField,
+  password: TextField,
+  content: TextareaAutosize
+  // Add more components as needed
+};
+
 export const FormsComponent = <T extends Record<string, string>>({
   FormValues,
   buttonText,
@@ -93,8 +107,11 @@ export const FormsComponent = <T extends Record<string, string>>({
   const { errors } = formState;
 
   const inputs = Object.keys(FormValues).map((key) => {
+
+    const Component = componentMapping[key] || TextField;
+
     return (
-      <TextField
+      <Component
         key={key}
         label={wordsTranslate[key] || key}
         type={key}
