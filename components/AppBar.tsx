@@ -17,6 +17,8 @@ import { SessionContext } from "next-auth/react";
 import { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
+import { signOut } from "next-auth/react"
+
 /* import Sitemark from './SitemarkIcon';
 import ColorModeIconDropdown from '../../shared-theme/ColorModeIconDropdown'; */
 
@@ -50,6 +52,11 @@ export default function AppAppBar() {
   const navigationLogin = () => {
     router.push("/login");
   };
+
+  const logout = async() => {
+    await signOut();
+    router.push("/login");
+  }
 
   const navigationRegister = () => {
     router.push("/register");
@@ -114,7 +121,7 @@ export default function AppAppBar() {
                   color="secondary"
                   variant="text"
                   size="small"
-                  onClick={navigationLogin}
+                  onClick={logout}
                 >
                   Logout
                 </Button>
@@ -196,7 +203,7 @@ export default function AppAppBar() {
                         color="secondary"
                         variant="text"
                         size="small"
-                        onClick={navigationLogin}
+                        onClick={logout}
                       >
                         Logout
                       </Button>

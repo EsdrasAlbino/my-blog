@@ -1,8 +1,9 @@
 "use client";
 import { FormsPost } from "@/components/complexUI/formsPost/FormsPost";
 import { Post } from "@/lib/types";
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { SessionContext } from "next-auth/react";
 
 export default function CreatePost() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -35,6 +36,25 @@ export default function CreatePost() {
       console.log("error", error);
     }
   };
+
+  const router = useRouter();
+  const sessionContext = useContext(SessionContext);
+
+  if (!sessionContext) {
+    return <div>Error: Session context is undefined</div>;
+  }
+
+  const { status } = sessionContext;
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  console.log("status", status);
+
+  if (status === "unauthenticated") {
+    router.push("/");
+  }
 
   return (
     <div>

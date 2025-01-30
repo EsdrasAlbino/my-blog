@@ -156,13 +156,13 @@ export const FormsComponent = <T extends Record<string, string>>({
     }
   };
 
-  const inputs = Object.keys(FormValues).map((key) => {
+  const inputs = Object.keys(FormValues).map((key, index) => {
     const Component = componentMapping[key] || TextField;
 
     return (
       <>
         <Component
-          key={key}
+          key={key + index}
           label={wordsTranslate[key] || key}
           type={key}
           // @ts-ignore
@@ -270,6 +270,7 @@ export const FormsComponent = <T extends Record<string, string>>({
           >
             <Stack
               style={{ display: "flex", flexDirection: "column", gap: 10 }}
+              key={title}
             >
               {inputs}
               {isAi && (
