@@ -23,6 +23,8 @@ export function StyledRoot({
     return <div>Loading...</div>;
   }
 
+  console.log("status", status);
+
   if(status === "unauthenticated") {
     router.push("/");
   }
