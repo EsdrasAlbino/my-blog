@@ -116,7 +116,7 @@ export const FormsComponent = <T extends Record<string, string>>({
 
   const { register, handleSubmit, formState, getValues } = form;
   const { errors } = formState;
-
+  //@ts-ignore
   const getSuggestion = async (field: keyof FormValues) => {
     try {
       setIsLoadingAi((prev) => ({ ...prev, [field]: true }));
@@ -126,9 +126,11 @@ export const FormsComponent = <T extends Record<string, string>>({
       const prompt =
         field === "title"
           ? `Sugira alguns títulos baseado nesse conteudo: ${getValues(
+              //@ts-ignore
               "content"
             )}`
           : `Seguira alguns conteudos relevantes baseados nesse título: ${getValues(
+              //@ts-ignore
               "title"
             )}`;
 
